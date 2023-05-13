@@ -5,3 +5,4 @@ typedef struct {
 } Infix;
 
 Infix infix_new(char expr[INFIX_EXPR_MAX_SIZE]);
+Infix infix_parenthesize(Infix infix);

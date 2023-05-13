@@ -12,3 +12,7 @@ Infix infix_new(char expr[INFIX_EXPR_MAX_SIZE]) {
 
 	return infix;
 }
+
+Infix infix_parenthesize(Infix infix) {
+	
+}

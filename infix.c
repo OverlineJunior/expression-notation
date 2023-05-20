@@ -57,8 +57,7 @@ Infix infix_parenthesize_operator(Infix infix, int op_index) {
     for (int i = op_index - 1; i >= 0; i--) {
         char ch = infix.expr[i];
 
-        // Also ignore operators.
-        if (ch == ' ') continue;
+        if (ch == ' ' || is_operator(ch)) continue;
 
         insert_char(infix.expr, '(', i);
         break;

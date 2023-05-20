@@ -32,6 +32,90 @@ bool is_operator(char ch) {
     return ch == '+' || ch == '-' || ch == '*' || ch == '/';
 }
 
+bool is_operand(char ch) {
+    return ch != ' ' && !is_operator(ch);
+}
+
+int get_closing_parenthesis_index(Infix infix, int opening_parenthesis_i) {
+    const char opening_parenthesis = infix.expr[opening_parenthesis_i];
+    assert_msg(opening_parenthesis == '(' || opening_parenthesis == ')', "Opening parenthesis index does not lead to a parenthesis!\n");
+
+    const bool traverse_right = opening_parenthesis == '(';
+    const char closing_parenthesis = traverse_right ? ')' : '(';
+    int parenthesis_depth = 1;
+
+    for (
+        int i = opening_parenthesis_i + (traverse_right ? 1 : -1);
+        traverse_right ? i < strlen(infix.expr) : i >= 0;
+        traverse_right ? i++ : i--
+    ) {
+        const char ch = infix.expr[i];
+
+        if (ch == opening_parenthesis) {
+            parenthesis_depth++;
+        } else if (ch == closing_parenthesis) {
+            parenthesis_depth--;
+
+            if (parenthesis_depth == 0) {
+                return i;
+            }
+        }
+    }
+
+    printf("Could not find a closing parenthesis for the opening parenthesis at index %i!\n", opening_parenthesis_i);
+    exit(EXIT_FAILURE);
+}
+
+int get_right_operand_index(Infix infix, int operator_index) {
+    assert_msg(is_operator(infix.expr[operator_index]), "Operator index does not lead to an operator!\n");
+
+    for (int i = operator_index + 1; i < strlen(infix.expr); i++) {
+        char ch = infix.expr[i];
+
+        if (is_operand(ch)) {
+            return i;
+        }
+    }
+
+    printf("Could not find an operand on the right of the operator of index %i!\n", operator_index);
+    exit(EXIT_FAILURE);
+}
+
+int get_left_operand_index(Infix infix, int operator_index) {
+    assert_msg(is_operator(infix.expr[operator_index]), "Operator index does not lead to an operator!\n");
+
+    for (int i = operator_index - 1; i >= 0; i--) {
+        char ch = infix.expr[i];
+
+        if (is_operand(ch)) {
+            return i;
+        }
+    }
+
+    printf("Could not find an operand on the left of the operator of index %i!\n", operator_index);
+    exit(EXIT_FAILURE);
+}
+
+Infix parenthesize_operator(Infix infix, int operator_index) {
+    const int right_operand_i = get_right_operand_index(infix, operator_index);
+    const char right_operand = infix.expr[right_operand_i];
+    const int right_parenthesis_i = right_operand == '('
+        ? get_closing_parenthesis_index(infix, right_operand_i)
+        : right_operand_i + 1;
+
+    insert_char(infix.expr, ')', right_parenthesis_i);
+
+    const int left_operand_i = get_left_operand_index(infix, operator_index);
+    const char left_operand = infix.expr[left_operand_i];
+    const int left_parenthesis_i = left_operand == ')'
+        ? get_closing_parenthesis_index(infix, left_operand_i)
+        : left_operand_i;
+
+    insert_char(infix.expr, '(', left_parenthesis_i);
+
+    return infix;
+}
+
 Infix infix_new(char expr[INFIX_EXPR_SIZE]) {
     char sized_expr[INFIX_EXPR_SIZE];
     strcpy_s(sized_expr, INFIX_EXPR_SIZE, expr);
@@ -40,63 +124,6 @@ Infix infix_new(char expr[INFIX_EXPR_SIZE]) {
 	strcpy_s(infix.expr, INFIX_EXPR_SIZE, sized_expr);
 
 	return infix;
-}
-
-// TODO: Simplify and split logic.
-Infix infix_parenthesize_operator(Infix infix, int op_index) {
-    assert_msg(is_operator(infix.expr[op_index]), "Operator index does not lead to an operator!\n");
-
-    int parenthesis_depth = 0;
-
-    // Traverse right.
-    for (int i = op_index + 1; i < strlen(infix.expr); i++) {
-        char ch = infix.expr[i];
-
-        if (ch == '(')
-            parenthesis_depth++;
-
-        if (ch == ')') {
-            parenthesis_depth--;
-
-            if (parenthesis_depth == 0) {
-                insert_char(infix.expr, ')', i + 1);
-                break;
-            }
-        }
-
-        if (parenthesis_depth > 0 || ch == ' ' || is_operator(ch))
-            continue;
-
-        insert_char(infix.expr, ')', i + 1);
-        break;
-    }
-
-    parenthesis_depth = 0;
-
-    // Traverse left.
-    for (int i = op_index - 1; i >= 0; i--) {
-        char ch = infix.expr[i];
-
-        if (ch == ')')
-            parenthesis_depth++;
-
-        if (ch == '(') {
-            parenthesis_depth--;
-
-            if (parenthesis_depth == 0) {
-                insert_char(infix.expr, '(', i);
-                break;
-            }
-        }
-
-        if (parenthesis_depth > 0 || ch == ' ' || is_operator(ch))
-            continue;
-
-        insert_char(infix.expr, '(', i);
-        break;
-    }
-
-    return infix;
 }
 
 Infix infix_parenthesize(Infix infix);

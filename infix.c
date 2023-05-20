@@ -42,22 +42,55 @@ Infix infix_new(char expr[INFIX_EXPR_SIZE]) {
 	return infix;
 }
 
+// TODO: Simplify and split logic.
 Infix infix_parenthesize_operator(Infix infix, int op_index) {
+    assert_msg(is_operator(infix.expr[op_index]), "Operator index does not lead to an operator!\n");
+
+    int parenthesis_depth = 0;
+
     // Traverse right.
     for (int i = op_index + 1; i < strlen(infix.expr); i++) {
         char ch = infix.expr[i];
 
-        if (ch == ' ' || is_operator(ch)) continue;
+        if (ch == '(')
+            parenthesis_depth++;
+
+        if (ch == ')') {
+            parenthesis_depth--;
+
+            if (parenthesis_depth == 0) {
+                insert_char(infix.expr, ')', i + 1);
+                break;
+            }
+        }
+
+        if (parenthesis_depth > 0 || ch == ' ' || is_operator(ch))
+            continue;
 
         insert_char(infix.expr, ')', i + 1);
         break;
     }
 
+    parenthesis_depth = 0;
+
     // Traverse left.
     for (int i = op_index - 1; i >= 0; i--) {
         char ch = infix.expr[i];
 
-        if (ch == ' ' || is_operator(ch)) continue;
+        if (ch == ')')
+            parenthesis_depth++;
+
+        if (ch == '(') {
+            parenthesis_depth--;
+
+            if (parenthesis_depth == 0) {
+                insert_char(infix.expr, '(', i);
+                break;
+            }
+        }
+
+        if (parenthesis_depth > 0 || ch == ' ' || is_operator(ch))
+            continue;
 
         insert_char(infix.expr, '(', i);
         break;

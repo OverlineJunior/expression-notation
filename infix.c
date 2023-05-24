@@ -113,17 +113,17 @@ bool is_operator_parenthesized(Infix infix, int operator_index) {
 }
 
 Infix parenthesize_operator(Infix infix, int operator_index) {
+    assert_msg(!is_operator_parenthesized(infix, operator_index), "Operator is already parenthesized!\n");
+
     const int right_operand_i = get_right_operand_index(infix, operator_index);
-    const char right_operand = infix.expr[right_operand_i];
-    const int right_parenthesis_i = right_operand == '('
+    const int right_parenthesis_i = infix.expr[right_operand_i] == '('
         ? get_closing_parenthesis_index(infix, right_operand_i)
         : right_operand_i + 1;
 
     insert_char(infix.expr, ')', right_parenthesis_i);
 
     const int left_operand_i = get_left_operand_index(infix, operator_index);
-    const char left_operand = infix.expr[left_operand_i];
-    const int left_parenthesis_i = left_operand == ')'
+    const int left_parenthesis_i = infix.expr[left_operand_i] == ')'
         ? get_closing_parenthesis_index(infix, left_operand_i)
         : left_operand_i;
 

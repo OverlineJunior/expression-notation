@@ -96,6 +96,22 @@ int get_left_operand_index(Infix infix, int operator_index) {
     exit(EXIT_FAILURE);
 }
 
+bool is_operator_parenthesized(Infix infix, int operator_index) {
+    const int right_operand_i = get_right_operand_index(infix, operator_index);
+    const int right_parenthesis_i = infix.expr[right_operand_i] == '('
+        ? get_closing_parenthesis_index(infix, right_operand_i)
+        : right_operand_i + 1;
+    const bool right_flag = infix.expr[right_parenthesis_i] == ')';
+
+    const int left_operand_i = get_left_operand_index(infix, operator_index);
+    const int left_parenthesis_i = infix.expr[left_operand_i] == ')'
+        ? get_closing_parenthesis_index(infix, left_operand_i)
+        : left_operand_i - 1;
+    const bool left_flag = infix.expr[left_parenthesis_i] == '(';
+
+    return right_flag && left_flag;
+}
+
 Infix parenthesize_operator(Infix infix, int operator_index) {
     const int right_operand_i = get_right_operand_index(infix, operator_index);
     const char right_operand = infix.expr[right_operand_i];

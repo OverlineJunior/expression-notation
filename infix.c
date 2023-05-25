@@ -146,4 +146,24 @@ Infix infix_new(char expr[INFIX_EXPR_SIZE]) {
 	return infix;
 }
 
-Infix infix_parenthesize(Infix infix);
+Infix infix_parenthesize(Infix infix) {
+    for (int i = 0; i < strlen(infix.expr); i++) {
+        const char ch = infix.expr[i];
+
+        if (!is_operator(ch) || ch == '+' || ch == '-' || is_operator_parenthesized(infix, i))
+            continue;
+
+        return infix_parenthesize(parenthesize_operator(infix, i));
+    }
+
+    for (int i = 0; i < strlen(infix.expr); i++) {
+        const char ch = infix.expr[i];
+
+        if (!is_operator(ch) || is_operator_parenthesized(infix, i))
+            continue;
+
+        return infix_parenthesize(parenthesize_operator(infix, i));
+    }
+
+    return infix;
+}

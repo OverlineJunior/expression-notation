@@ -2,7 +2,8 @@
 #include "../postfix.h"
 
 int main(void) {
-	Infix infix = infix_new("1 + 1");
-	infix = parenthesize_operator(infix, 2);
-	printf("%s\n", infix.expr);
+	Infix infix = infix_new("1 + 2 * 3 - (2 + 1)");
+	infix = infix_parenthesize(infix);
+
+	printf("%s", infix.expr);
 }

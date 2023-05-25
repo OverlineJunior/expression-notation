@@ -139,11 +139,11 @@ Infix parenthesize_operator(Infix infix, int operator_index) {
 // Returns an Infix with an increased capacity expression for possible future operations on it.
 Infix infix_new(char expr[INFIX_EXPR_SIZE]) {
     char sized_expr[INFIX_EXPR_SIZE];
-    strcpy_s(sized_expr, INFIX_EXPR_SIZE, expr);
+    strcpy(sized_expr, expr);
 
 	Infix infix;
-	strcpy_s(infix.expr, INFIX_EXPR_SIZE, sized_expr);
-
+	strcpy(infix.expr, sized_expr);
+    
 	return infix;
 }
 

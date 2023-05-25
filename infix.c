@@ -28,6 +28,18 @@ void insert_char(char* src, char ch, int index) {
     src[index] = ch;
 }
 
+void remove_char(char* src, int index) {
+    assert_msg(strlen(src) + 1 < INFIX_EXPR_SIZE, "String length exceeded size limit!\n");
+    assert_msg(index <= strlen(src), "Index exceeded string length!\n");
+
+    // Shift everything to the left from index.
+    for (int i = index; i < strlen(src) - 1; i++) {
+        src[i] = src[i + 1];
+    }
+
+    src[strlen(src) - 1] = '\0';
+}
+
 bool is_operator(char ch) {
     return ch == '+' || ch == '-' || ch == '*' || ch == '/';
 }

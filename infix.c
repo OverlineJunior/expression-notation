@@ -136,6 +136,7 @@ Infix parenthesize_operator(Infix infix, int operator_index) {
     return infix;
 }
 
+// Returns an Infix with an increased capacity expression for possible future operations on it.
 Infix infix_new(char expr[INFIX_EXPR_SIZE]) {
     char sized_expr[INFIX_EXPR_SIZE];
     strcpy_s(sized_expr, INFIX_EXPR_SIZE, expr);
@@ -146,6 +147,7 @@ Infix infix_new(char expr[INFIX_EXPR_SIZE]) {
 	return infix;
 }
 
+// Returns an Infix with its expression fully parenthesized, taking into account operator precedence.
 Infix infix_parenthesize(Infix infix) {
     for (int i = 0; i < strlen(infix.expr); i++) {
         const char ch = infix.expr[i];

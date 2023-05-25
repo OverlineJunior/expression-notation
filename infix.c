@@ -36,6 +36,10 @@ bool is_operand(char ch) {
     return ch != ' ' && !is_operator(ch);
 }
 
+int get_operator_priority(char operator) {
+    return operator == '+' || operator == '-' ? 0 : 1;
+}
+
 int get_closing_parenthesis_index(Infix infix, int opening_parenthesis_i) {
     const char opening_parenthesis = infix.expr[opening_parenthesis_i];
     assert_msg(opening_parenthesis == '(' || opening_parenthesis == ')', "Opening parenthesis index does not lead to a parenthesis!\n");

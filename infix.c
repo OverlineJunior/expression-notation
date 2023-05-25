@@ -16,16 +16,16 @@ void assert_msg(bool condition, char msg[]) {
     }
 }
 
-void insert_char(char* str, char ch, int index) {
-    assert_msg(strlen(str) + 1 < INFIX_EXPR_SIZE, "String length exceeded size limit!\n");
-    assert_msg(index <= strlen(str), "Index exceeded string length!\n");
+void insert_char(char* src, char ch, int index) {
+    assert_msg(strlen(src) + 1 < INFIX_EXPR_SIZE, "String length exceeded size limit!\n");
+    assert_msg(index <= strlen(src), "Index exceeded string length!\n");
 
     // Shift everything to the right from and including index.
-    for (int i = strlen(str); i >= index; i--) {
-        str[i + 1] = str[i];
+    for (int i = strlen(src); i >= index; i--) {
+        src[i + 1] = src[i];
     }
 
-    str[index] = ch;
+    src[index] = ch;
 }
 
 bool is_operator(char ch) {

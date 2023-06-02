@@ -3,6 +3,9 @@
 #include <string.h>
 #include "libs/stack.h"
 
+/// @brief Alternative to `strcat(dest, &ch)`, since it gives unexpected results.
+/// @param dest Destination to push in. Modified by the function.
+/// @param ch Character to push into `dest`.
 void push_char(char* dest, char ch) {
     int len = strlen(dest);
 
@@ -10,14 +13,8 @@ void push_char(char* dest, char ch) {
     dest[len + 1] = '\0';
 }
 
-bool is_operator(char token) {
-    return token == '+' || token == '-' || token == '*' || token == '/';
-}
-
-bool is_operand(char token) {
-    return !is_operator(token) && token != ' ' && token != '(' && token != ')';
-}
-
+/// @brief Returns the precedence of `token` coming from the input expression. Highly coupled to infix_to_postfix.
+/// @return Integer such that the higher its value, the higher the token's precedence.
 int input_precedence(char token) {
     switch (token) {
         case ')':
@@ -37,6 +34,8 @@ int input_precedence(char token) {
     }
 }
 
+/// @brief Returns the precedence of `token` coming from the Shunting Yard algorithm's stack. Highly coupled to infix_to_postfix.
+/// @return Integer such that the higher its value, the higher the token's precedence.
 int stack_precedence(char token) {
     switch (token) {
         case '(':
@@ -52,6 +51,16 @@ int stack_precedence(char token) {
             exit(EXIT_FAILURE);
         }
     }
+}
+
+/// @return True if `token` is a supported operator, aka +, -, * or /.
+bool is_operator(char token) {
+    return token == '+' || token == '-' || token == '*' || token == '/';
+}
+
+/// @return True if `token` is a supported operand, aka anything other than an operator, whitespace or parenthesis.
+bool is_operand(char token) {
+    return !is_operator(token) && token != ' ' && token != '(' && token != ')';
 }
 
 /// @brief Converts the given expression to postfix using the Shunting Yard algorithm.

@@ -1,9 +1,16 @@
 #include <stdio.h>
 #include <stdlib.h>
-#include "my_assert.h"
+#include <stdbool.h>
 
 #define STACK_SIZE 64
 #define NONE -1
+
+void assert_msg(bool condition, char msg[]) {
+    if (!condition) {
+        printf("%s\n", msg);
+        exit(EXIT_FAILURE);
+    }
+}
 
 typedef struct {
     char elements[STACK_SIZE];

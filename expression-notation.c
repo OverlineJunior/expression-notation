@@ -3,7 +3,7 @@
 #include "libs/stack.h"
 #include "libs/my_assert.h"
 
-#define NONE -1
+#define INT_NONE -1
 
 void push_char(char* dest, char ch) {
     int len = strlen(dest);
@@ -37,14 +37,14 @@ int input_precedence(char token) {
         return 3;
     }
 
-    return NONE;
+    return INT_NONE;
 }
 
 int stack_precedence(char token) {;
     assert_msg(is_operator(token) || is_parenthesis(token), "Only operators and parenthesis have precedence!");
 
     if (token == ')') {
-        return NONE;
+        return INT_NONE;
     } else if (token == '(') {
         return 0;
     } else if (token == '+' || token == '-') {
@@ -53,7 +53,7 @@ int stack_precedence(char token) {;
         return 4;
     }
 
-    return NONE;
+    return INT_NONE;
 }
 
 /// @brief Converts the given expression to postfix using the Shunting Yard algorithm.

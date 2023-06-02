@@ -56,6 +56,8 @@ int stack_precedence(char token) {;
     return NONE;
 }
 
+/// @brief Converts the given expression to postfix using the Shunting Yard algorithm.
+/// @param expr Infix expression to be converted. Modified by the function.
 void infix_to_postfix(char* expr) {
     Stack stack = stack_new();
     stack_push(&stack, '(');

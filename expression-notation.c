@@ -1,4 +1,5 @@
 #include <string.h>
+#include <stdlib.h>
 #include "libs/stack.h"
 #include "libs/my_assert.h"
 
@@ -61,7 +62,7 @@ void infix_to_postfix(char* expr) {
 
     push_char(expr, ')');
 
-    char buffer[strlen(expr)];
+    char* buffer = malloc(strlen(expr) + 1);
     // Removes a garbage value at index 0.
     strcpy(buffer, "");
 
@@ -89,4 +90,5 @@ void infix_to_postfix(char* expr) {
     }
 
     strcpy(expr, buffer);
+    free(buffer);
 }

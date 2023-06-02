@@ -104,11 +104,16 @@ void infix_to_postfix(char* expr) {
         if (is_operand(token)) {
             push_char(buffer, token);
         } else {
-            while (!stack_is_empty(stack) && stack_precedence(stack_peek(stack)) >= input_precedence(token)) {
+            while (
+                !stack_is_empty(stack) &&
+                stack_precedence(stack_peek(stack)) >= input_precedence(token)
+            ) {
                 const char top = stack_pop(&stack);
 
-                if (top != '(')
-                    push_char(buffer, top);
+                if (top == '(')
+                    break;
+
+                push_char(buffer, top);
             }
 
             if (token != ')')

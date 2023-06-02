@@ -1,9 +1,7 @@
-#include <string.h>
+#include <stdio.h>
 #include <stdlib.h>
+#include <string.h>
 #include "libs/stack.h"
-#include "libs/my_assert.h"
-
-#define INT_NONE -1
 
 void push_char(char* dest, char ch) {
     int len = strlen(dest);
@@ -20,40 +18,40 @@ bool is_operand(char token) {
     return !is_operator(token) && token != ' ' && token != '(' && token != ')';
 }
 
-bool is_parenthesis(char token) {
-    return token == '(' || token == ')';
-}
-
 int input_precedence(char token) {
-    assert_msg(is_operator(token) || is_parenthesis(token), "Only operators and parenthesis have precedence!");
-
-    if (token == ')') {
-        return 0;
-    } else if (token == '(') {
-        return 5;
-    } else if (token == '+' || token == '-') {
-        return 1;
-    } else if (token == '*' || token == '/') {
-        return 3;
+    switch (token) {
+        case ')':
+            return 0;
+        case '(':
+            return 5;
+        case '*':
+        case '/':
+            return 3;
+        case '+':
+        case '-':
+            return 1;
+        default: {
+            printf("Token `%c` does not have a precedence value as input!\n", token);
+            exit(EXIT_FAILURE);
+        }
     }
-
-    return INT_NONE;
 }
 
-int stack_precedence(char token) {;
-    assert_msg(is_operator(token) || is_parenthesis(token), "Only operators and parenthesis have precedence!");
-
-    if (token == ')') {
-        return INT_NONE;
-    } else if (token == '(') {
-        return 0;
-    } else if (token == '+' || token == '-') {
-        return 2;
-    } else if (token == '*' || token == '/') {
-        return 4;
+int stack_precedence(char token) {
+    switch (token) {
+        case '(':
+            return 0;
+        case '*':
+        case '/':
+            return 4;
+        case '+':
+        case '-':
+            return 2;
+        default: {
+            printf("Token `%c` does not have a precedence value as a stack element!\n", token);
+            exit(EXIT_FAILURE);
+        }
     }
-
-    return INT_NONE;
 }
 
 /// @brief Converts the given expression to postfix using the Shunting Yard algorithm.

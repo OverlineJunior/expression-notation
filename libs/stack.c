@@ -3,7 +3,7 @@
 #include <stdbool.h>
 
 #define STACK_SIZE 64
-#define NONE -1
+#define INT_NONE -1
 
 void assert_msg(bool condition, char msg[]) {
     if (!condition) {
@@ -18,7 +18,7 @@ typedef struct {
 } Stack;
 
 Stack stack_new(void) {
-    Stack stack = { .top_index = NONE };
+    Stack stack = { .top_index = INT_NONE };
     return stack;
 }
 
@@ -27,7 +27,7 @@ bool stack_is_full(Stack stack) {
 }
 
 bool stack_is_empty(Stack stack) {
-    return stack.top_index == NONE;
+    return stack.top_index == INT_NONE;
 }
 
 void stack_push(Stack* stack, char value) {

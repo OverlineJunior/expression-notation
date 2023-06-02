@@ -35,6 +35,8 @@ int input_precedence(char token) {
     } else if (token == '*' || token == '/') {
         return 3;
     }
+
+    return NONE;
 }
 
 int stack_precedence(char token) {;
@@ -49,6 +51,8 @@ int stack_precedence(char token) {;
     } else if (token == '*' || token == '/') {
         return 4;
     }
+
+    return NONE;
 }
 
 void infix_to_postfix(char* expr) {

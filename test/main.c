@@ -1,9 +1,10 @@
 #include <stdio.h>
+#include <stdlib.h>
 #include <string.h>
 #include "../expression-notation.h"
 
 void test_infix_to_postifix(char input[], char expected_output[]) {
-    char output[strlen(input)];
+    char* output = malloc(strlen(input) + 1);
     strcpy(output, input);
 
     infix_to_postfix(output);
@@ -12,6 +13,8 @@ void test_infix_to_postifix(char input[], char expected_output[]) {
         printf("Test passed\n");
     else
         printf("Expected `%s`, got `%s`\n", expected_output, output);
+
+    free(output);
 }
 
 int main(void) {

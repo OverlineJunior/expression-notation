@@ -73,8 +73,11 @@ void infix_to_postfix(char* expr) {
     char* buffer = malloc(strlen(expr) + 1); // + 1 for the null terminator.
     strcpy(buffer, ""); // Removes a garbage value at index 0.
 
-    for (int i = 0; i < strlen(expr); i++) {
+    for (int i = 0; i < strlen(expr); i++) { 
         const char token = expr[i];
+
+        if (token == ' ')
+            continue;
 
         if (is_operand(token)) {
             push_char(buffer, token);

@@ -66,10 +66,9 @@ bool is_operand(char token) {
 /// @brief Converts the given expression to postfix using the Shunting Yard algorithm.
 /// @param expr Infix expression to be converted. Modified by the function.
 void infix_to_postfix(char* expr) {
-    Stack stack = stack_new();
-    stack_push(&stack, '(');
+    push_char(expr, ')'); // Allows expr to be sent without outer most parenthesis.
 
-    push_char(expr, ')');
+    Stack stack = stack_new();
 
     char* buffer = malloc(strlen(expr) + 1); // + 1 for the null terminator.
     strcpy(buffer, ""); // Removes a garbage value at index 0.

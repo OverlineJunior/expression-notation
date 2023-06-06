@@ -70,7 +70,7 @@ void infix_to_postfix(char* expr) {
 
     Stack stack = stack_new();
 
-    char* buffer = malloc(strlen(expr) + 1); // + 1 for the null terminator.
+    char* buffer = malloc(strlen(expr) + 1);
     strcpy(buffer, ""); // Removes a garbage value at index 0.
 
     for (int i = 0; i < strlen(expr); i++) { 
